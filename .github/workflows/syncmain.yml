@@ -27,9 +27,9 @@ jobs:
           # Clone the destination repo using the PAT
           git clone https://x-access-token:${PAT}@github.com/gabribaba/gabribeccari4.git dest-repo
           
-          cp main.pdf dest-repo/_site/cv_beccari.pdf
+          cp main.pdf dest-repo/docs/cv_beccari.pdf
           
-          cd dest-repo/_site
+          cd dest-repo/docs
           
           if git diff --quiet && git diff --staged --quiet; then
             echo "No changes detected in the PDF."
