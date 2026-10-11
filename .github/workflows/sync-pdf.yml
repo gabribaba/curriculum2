@@ -1,0 +1,44 @@
+name: Syncingmain
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'main.pdf'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Repository
+        uses: actions/checkout@v4
+
+      - name: Configure Git Identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Clone Destination Repo and Sync PDF
+        env:
+          PAT: ${{ secrets.DEST_REPO_PAT }}
+        run: |
+          # Clone the destination repo using the PAT
+          git clone https://x-access-token:${PAT}@github.com/gabribaba/gabribeccari4.git dest-repo
+          
+          # Copy the PDF to the destination repo structure 
+          # (Modify 'dest-repo/document.pdf' if it needs to go into a specific subfolder)
+          cp main.pdf _site/cv_beccari.pdf
+          
+          cd _site
+          
+          # Check if there are actual changes to commit
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "No changes detected in the PDF."
+            exit 0
+          fi
+          
+          # Stage, commit, and push changes
+          git add cv_beccari.pdf
+          git commit -m "chore: auto-sync updated PDF from source repository"
+          git push origin main
