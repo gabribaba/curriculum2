@@ -28,9 +28,9 @@ jobs:
           
           # Copy the PDF to the destination repo structure 
           # (Modify 'dest-repo/document.pdf' if it needs to go into a specific subfolder)
-          cp main.pdf _site/cv_beccari.pdf
+          cp main.pdf dest-repo/_site/cv_beccari.pdf
           
-          cd _site
+          cd dest-repo/_site
           
           # Check if there are actual changes to commit
           if git diff --quiet && git diff --staged --quiet; then
